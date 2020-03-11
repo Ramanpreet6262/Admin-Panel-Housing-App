@@ -12,6 +12,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Loader from '../Loader/Loader';
 
@@ -120,7 +122,9 @@ export default function AdminDashboard(props) {
                   <StyledTableCell align='right'>
                     {user.country}
                   </StyledTableCell>
-                  <StyledTableCell align='right'></StyledTableCell>
+                  <StyledTableCell align='right'>
+                    <EditIcon color='primary' /> <DeleteIcon />
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
