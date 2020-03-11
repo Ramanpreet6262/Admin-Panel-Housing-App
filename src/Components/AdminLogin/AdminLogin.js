@@ -6,6 +6,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import adminCredentials from '../../Data/adminLoginCreds';
 
@@ -41,30 +43,10 @@ const useStyles = makeStyles(theme => ({
 export default function AdminLogin() {
   const classes = useStyles();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [adminCreds, setAdminCreds] = useState({
     email: '',
     password: ''
   });
-
-  const handleEmailChange = event => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = event => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log(`${adminCreds.email} and ${adminCreds.password}`);
-    if (email === adminCreds.email && password === adminCreds.password) {
-      console.log('Credentials Matched Hurray!!!');
-    } else {
-      console.log('Sorry Credentials do not Match !!!!');
-    }
-  };
 
   useEffect(() => setAdminCreds(adminCredentials), []);
 
@@ -74,43 +56,94 @@ export default function AdminLogin() {
         <Typography component='h1' variant='h5'>
           Admin Sign in
         </Typography>
-        <form className={classes.form} noValidate autoComplete='off'>
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            value={email}
-            onChange={handleEmailChange}
-            autoComplete='email'
-            autoFocus
-          />
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='password'
-            name='password'
-            label='Password'
-            type='password'
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            onClick={handleSubmit}
-          >
-            Sign In
-          </Button>
-        </form>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            console.log(`${adminCreds.email} and ${adminCreds.password}`);
+            if (
+              values.email === adminCreds.email &&
+              values.password === adminCreds.password
+            ) {
+              console.log('Credentials Matched Hurray!!!');
+            } else {
+              console.log('Sorry Credentials do not Match !!!!');
+            }
+            setSubmitting(false);
+          }}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email('Invalid email address')
+              .required('Required'),
+            password: Yup.string()
+              .min(6, 'Must be 6 characters or more')
+              .required('Required')
+          })}
+        >
+          {props => {
+            const {
+              values,
+              touched,
+              errors,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              handleSubmit
+            } = props;
+            return (
+              <form
+                className={classes.form}
+                onSubmit={handleSubmit}
+                noValidate
+                autoComplete='off'
+              >
+                <TextField
+                  error={errors.email && touched.email}
+                  variant='outlined'
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={errors.email && touched.email && errors.email}
+                  autoComplete='email'
+                  autoFocus
+                />
+                <TextField
+                  error={errors.password && touched.password}
+                  variant='outlined'
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='password'
+                  label='Password'
+                  name='password'
+                  type='password'
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.password && touched.password && errors.password
+                  }
+                />
+                <Button
+                  type='submit'
+                  disabled={isSubmitting}
+                  fullWidth
+                  variant='contained'
+                  color='primary'
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              </form>
+            );
+          }}
+        </Formik>
       </div>
       <Box mt={4}>
         <Copyright />
