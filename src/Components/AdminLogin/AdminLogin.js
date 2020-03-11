@@ -5,9 +5,7 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import TextField from '@material-ui/core/TextField';
 
 import adminCredentials from '../../Data/adminLoginCreds';
 
@@ -77,29 +75,31 @@ export default function AdminLogin() {
           Admin Sign in
         </Typography>
         <form className={classes.form} noValidate autoComplete='off'>
-          <FormControl variant='outlined' margin='normal' fullWidth required>
-            <InputLabel htmlFor='component-outlined'>Email Address</InputLabel>
-            <OutlinedInput
-              id='email'
-              value={email}
-              onChange={handleEmailChange}
-              label='Email Address *'
-              name='email'
-              autoComplete='email'
-              autoFocus
-            />
-          </FormControl>
-          <FormControl variant='outlined' margin='normal' fullWidth required>
-            <InputLabel htmlFor='component-outlined'>Password</InputLabel>
-            <OutlinedInput
-              id='password'
-              value={password}
-              onChange={handlePasswordChange}
-              label='Password *'
-              name='password'
-              type='password'
-            />
-          </FormControl>
+          <TextField
+            variant='outlined'
+            margin='normal'
+            required
+            fullWidth
+            id='email'
+            label='Email Address'
+            name='email'
+            value={email}
+            onChange={handleEmailChange}
+            autoComplete='email'
+            autoFocus
+          />
+          <TextField
+            variant='outlined'
+            margin='normal'
+            required
+            fullWidth
+            id='password'
+            name='password'
+            label='Password'
+            type='password'
+            value={password}
+            onChange={handlePasswordChange}
+          />
           <Button
             type='submit'
             fullWidth
