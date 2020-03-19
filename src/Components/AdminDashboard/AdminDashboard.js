@@ -70,6 +70,9 @@ const useStyles = makeStyles(() => ({
   },
   table: {
     minWidth: 700
+  },
+  actionIcon: {
+    cursor: 'pointer'
   }
 }));
 
@@ -111,8 +114,8 @@ export default function AdminDashboard(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.users.map(user => (
-                <StyledTableRow key={user.id}>
+              {props.users.map((user, index) => (
+                <StyledTableRow key={index}>
                   <StyledTableCell component='th' scope='row'>
                     {user.name}
                   </StyledTableCell>
@@ -123,7 +126,11 @@ export default function AdminDashboard(props) {
                     {user.country}
                   </StyledTableCell>
                   <StyledTableCell align='right'>
-                    <EditIcon color='primary' /> <DeleteIcon />
+                    <EditIcon className={classes.actionIcon} color='primary' />{' '}
+                    <DeleteIcon
+                      className={classes.actionIcon}
+                      onClick={() => props.deleteUserHandler(index)}
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

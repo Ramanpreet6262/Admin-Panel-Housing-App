@@ -15,6 +15,16 @@ const App = () => {
 
   useEffect(() => setUsers(usersData), []);
 
+  const deleteUserHandler = id => {
+    console.log(`deleted ${id}`);
+    // var book = this.state.bookList;
+    // book.splice(event.target.id, 1);
+    // this.setState({ bookList: book });
+    users.splice(id, 1);
+    console.log(users);
+    setUsers(users);
+  };
+
   return (
     <div className='App'>
       <Navbar />
@@ -25,7 +35,10 @@ const App = () => {
           path='/admin/dashboard'
           exact
           render={() => (
-            <AdminDashboard users={users.length === 0 ? null : users} />
+            <AdminDashboard
+              users={users.length === 0 ? null : users}
+              deleteUserHandler={deleteUserHandler}
+            />
           )}
         />
       </Switch>
